@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ChatSidebar from './ChatSidebar';
+// import ChatSidebar from './ChatSidebar';
 import ChatWindow from './ChatWindow';
 
 const ChatApp = () => {
@@ -77,10 +77,8 @@ const ChatApp = () => {
     // }
 
     try {
-        // const response = await axios.post('http://localhost:5001/chat', {
-          const response = await axios.post('http://15.237.121.31/chat', {
+        const response = await axios.post('http://localhost:8000/chat', {
             message: message,
-            // user_id: userId,
             conversation_id: 1
         }, {
             headers: {
@@ -101,6 +99,30 @@ const ChatApp = () => {
         console.error('Error sending message:', error);
     }
   };
+
+  const handleSendMessageFromButton = async (message) => {
+    const updatedChats = [...chats];
+    try {
+        const response = await axios.post('http://localhost:8000/chat', {
+            message: message,
+            conversation_id: 1
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const botResponse = response.data?.text || 'No response';
+        const buttons = response.data?.buttons || [];  // Extract buttons if available
+
+        updatedChats[selectedChatIndex].push({ bot: botResponse, buttons: buttons  });
+        setChats([...updatedChats]);
+        localStorage.setItem('chats', JSON.stringify(updatedChats)); // Store chats in localStorage
+
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
+  }
 
   // const startNewConversation = async () => {
   //   try {
@@ -174,6 +196,7 @@ const ChatApp = () => {
       <ChatWindow
         chat={chats[selectedChatIndex] || []}
         onSendMessage={handleSendMessage}
+        onSendMessageFromButton={handleSendMessageFromButton}
         conversationId={1}
         // conversationId={conversations[selectedChatIndex]?.conversationId}
       />
