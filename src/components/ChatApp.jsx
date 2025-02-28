@@ -4,8 +4,6 @@ import ChatWindow from './ChatWindow';
 
 const url = import.meta.env.VITE_URL;
 
-console.log("url", url)
-
 const ChatApp = () => {
   const [chats, setChats] = useState(() => {
     const storedChats = localStorage.getItem('chats');
