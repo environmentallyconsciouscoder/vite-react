@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ChatWindow from './ChatWindow';
 
+const url = import.meta.env.VITE_URL;
+
+console.log("url", url)
+
 const ChatApp = () => {
   const [chats, setChats] = useState(() => {
     const storedChats = localStorage.getItem('chats');
@@ -40,7 +44,7 @@ const ChatApp = () => {
     localStorage.setItem('chats', JSON.stringify(updatedChats));
 
     try {
-        const response = await axios.post('http://localhost:8000/chat', {
+        const response = await axios.post(url, {
             message: message,
             conversation_id: 1
         }, {
@@ -63,7 +67,7 @@ const ChatApp = () => {
   const handleSendMessageFromButton = async (message) => {
     const updatedChats = [...chats];
     try {
-        const response = await axios.post('http://localhost:8000/chat', {
+        const response = await axios.post(url, {
             message: message,
             conversation_id: 1
         }, {
