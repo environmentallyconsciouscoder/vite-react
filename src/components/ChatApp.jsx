@@ -18,7 +18,7 @@ const ChatApp = () => {
     return storedConversations ? JSON.parse(storedConversations) : [];
   });
   const [isChatOpen, setIsChatOpen] = useState(false);  // Manage chat window visibility
-  const userId = 'user124'; // Replace with actual user ID logic
+  // const userId = 'user124'; // Replace with actual user ID logic
 
   useEffect(() => {
     const storedChats = JSON.parse(localStorage.getItem('chats')) || [];
